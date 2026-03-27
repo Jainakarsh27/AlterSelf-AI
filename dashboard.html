@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlterSelf AI | Identity Dashboard</title>
+    <style>
+        :root {
+            --primary: #9333ea;
+            --bg: #0b0118;
+            --card: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            color: white;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 100% 0%, #1e0b36 0%, #0b0118 100%);
+            z-index: -1;
+        }
+
+        .navbar {
+            padding: 40px 24px 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .nav-actions { display: flex; gap: 16px; }
+        .action-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--card);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .content { padding: 24px; }
+
+        .welcome { margin-bottom: 40px; }
+        .welcome-sub {
+            color: #666;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 2px;
+        }
+        .welcome-title {
+            font-size: 36px;
+            font-weight: 900;
+            margin-top: 4px;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 24px;
+            border-radius: 32px;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 950;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-val-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 4px;
+        }
+
+        .stat-val { font-size: 28px; font-weight: 900; }
+        .stat-trend { color: #10b981; font-weight: 700; font-size: 12px; }
+
+        .chart-section {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .chart-info { flex: 1; }
+        .chart-mock {
+            width: 120px;
+            height: 120px;
+            border: 10px solid rgba(147, 51, 234, 0.2);
+            border-top: 10px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .history-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 100px;
+        }
+
+        .history-item {
+            aspect-ratio: 3/4;
+            background: #111;
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--border);
+        }
+
+        .item-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 40px rgba(147, 51, 234, 0.5);
+            font-size: 40px;
+            color: white;
+            text-decoration: none;
+            border-top: 1px solid rgba(255,255,255,0.4);
+            z-index: 80;
+        }
+
+        /* CHATBOT OVERLAY */
+        #chatbot {
+            position: fixed;
+            inset: 24px;
+            background: rgba(0,0,0,0.95);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        }
+
+        .chat-header {
+            padding: 24px;
+            background: rgba(147, 51, 234, 0.1);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .msg { margin-bottom: 24px; max-width: 80%; }
+        .msg-bot { align-self: flex-start; }
+        .msg-user { align-self: flex-end; margin-left: auto; }
+        
+        .msg-bubble {
+            padding: 16px 20px;
+            border-radius: 24px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        .msg-bot .msg-bubble { background: rgba(255,255,255,0.05); border: 1px solid var(--border); }
+        .msg-user .msg-bubble { background: var(--primary); }
+
+        .chat-input-area {
+            padding: 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 16px;
+            color: white;
+            outline: none;
+        }
+
+        .chat-send {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 12px;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .footer {
+            opacity: 0.2;
+            text-align: center;
+            letter-spacing: 10px;
+            font-size: 9px;
+            font-weight: 900;
+            margin-bottom: 120px;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(20px);
+            padding: 24px;
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid var(--border);
+            font-size: 24px;
+            z-index: 90;
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg"></div>
+
+    <div class="navbar">
+        <a href="index.html" class="logo">
+            <div class="logo-box">📱</div>
+            Nexus<span style="color: var(--primary)">DB</span>
+        </a>
+        <div class="nav-actions">
+            <div class="action-circle" onclick="toggleChat()">✨</div>
+            <div class="action-circle">🔔</div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="welcome">
+            <div class="welcome-sub" id="userSub">Akarsh's Digital Nexus</div>
+            <h2 class="welcome-title">Identity Dashboard</h2>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: rgba(192, 38, 211, 0.2); color: #c026d3;">✨</div>
+                <div class="stat-label">Synths</div>
+                <div class="stat-val-row">
+                    <div class="stat-val" id="synthStat">42</div>
+                    <div class="stat-trend">+12%</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: rgba(251, 191, 36, 0.2); color: #fbbf24;">⚡</div>
+                <div class="stat-label">Credits</div>
+                <div class="stat-val-row">
+                    <div class="stat-val" id="creditStat">1.2k</div>
+                    <div class="stat-trend" style="color:#fbbf24">PRO</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <div class="chart-info">
+                <h3 style="margin:0; font-size:20px; font-weight:900;">Neural Affinity</h3>
+                <p style="color:#666; font-size:10px; font-weight:700; text-transform:uppercase; margin-top:4px;">Style Distribution</p>
+                <div style="display:flex; flex-direction:column; gap:8px; margin-top:16px;">
+                    <div style="display:flex; align-items:center; font-size:10px; font-weight:700; color:#888;">
+                        <div style="width:8px; height:8px; background:var(--primary); border-radius:50%; margin-right:8px;"></div> Anime
+                    </div>
+                    <div style="display:flex; align-items:center; font-size:10px; font-weight:700; color:#888;">
+                        <div style="width:8px; height:8px; background:#3b82f6; border-radius:50%; margin-right:8px;"></div> Cyber
+                    </div>
+                </div>
+            </div>
+            <div class="chart-mock">
+                <span style="font-size:24px; font-weight:900;">74%</span>
+            </div>
+        </div>
+
+        <div class="history-title-row">
+            <h3 style="margin:0; font-size:20px; font-weight:900;">Forge History</h3>
+            <span style="color:var(--primary); font-size:10px; font-weight:950; text-transform:uppercase; letter-spacing:1px; cursor:pointer;">View All ↗️</span>
+        </div>
+
+        <div class="history-grid">
+            <div class="history-item">
+                <img src="https://picsum.photos/id/64/400/600" onerror="this.src='https://images.unsplash.com/photo-1578632292335-df3abbb0d586?w=400'" style="width:100%; height:100%; object-fit:cover;">
+                <div class="item-info">
+                    <div style="font-weight:900; font-size:10px;">NEURAL ID #1042</div>
+                    <div style="font-size:8px; color:#888; font-weight:700;">5h ago • Cyberpunk</div>
+                </div>
+            </div>
+            <div class="history-item">
+                <img src="https://picsum.photos/id/91/400/600" onerror="this.src='https://images.unsplash.com/photo-1580417234674-3253715df6af?w=400'" style="width:100%; height:100%; object-fit:cover;">
+                <div class="item-info">
+                    <div style="font-weight:900; font-size:10px;">NEURAL ID #1043</div>
+                    <div style="font-size:8px; color:#888; font-weight:700;">8h ago • Vector Art</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">AJ - Akarsh Jain</div>
+    </div>
+
+    <!-- CHATBOT -->
+    <div id="chatbot">
+        <div class="chat-header">
+            <div>
+                <div style="font-weight:900; font-size:14px; text-transform:uppercase; letter-spacing:2px;">Neural Guide 🤖</div>
+                <div style="font-size:10px; color:#10b981; font-weight:700;">ONLINE • MULTILINGUAL</div>
+            </div>
+            <div onclick="toggleChat()" style="cursor:pointer; font-size:24px;">❌</div>
+        </div>
+        <div class="chat-messages" id="chatMsgs">
+            <div class="msg msg-bot">
+                <div class="msg-bubble">Hello! I am your Neural Synthesis Guide. I can help you find the perfect anime character or guide you through the Forge. How can I assist you?</div>
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="file" id="chatFileInput" style="display:none;" onchange="handleChatUpload(this)">
+            <button class="chat-send" style="background:rgba(255,255,255,0.05); border:1px solid var(--border);" onclick="document.getElementById('chatFileInput').click()">📎</button>
+            <input type="text" id="chatInput" class="chat-input" placeholder="Ask about the project or upload..." onkeyup="if(event.key==='Enter') sendMessage()">
+            <button class="chat-send" onclick="sendMessage()">📤</button>
+        </div>
+    </div>
+
+    <a href="upload.html" class="fab">➕</a>
+
+    <div class="bottom-nav">
+        <div style="color: var(--primary); cursor:pointer;" onclick="alert('System: Home Nexus reloaded...'); location.reload();">📱</div>
+        <div style="opacity: 0.3; cursor:pointer;" onclick="alert('Chronos: Reviewing your temporal forge history...')">⏳</div>
+        <div style="width: 40px"></div>
+        <div style="opacity: 0.3; cursor:pointer;" onclick="alert('System: Neural configuration nexus loading...')">⚙️</div>
+        <div style="opacity: 0.3; cursor:pointer;" onclick="alert('Identity: Opening your digital profile...')">👤</div>
+    </div>
+
+    <script>
+        // Identity Sync & State Recovery
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlUser = urlParams.get('user');
+        const savedUser = localStorage.getItem('alterself_user');
+        
+        const activeUser = urlUser || savedUser || 'Akarsh Jain';
+        document.getElementById('userSub').innerText = `${activeUser}'s Digital Nexus`;
+
+        // Live Data Engine
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            if(!obj) return;
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const val = Math.floor(progress * (end - start) + start);
+                obj.innerText = val;
+                if (progress < 1) window.requestAnimationFrame(step);
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        window.onload = () => {
+            const baseSynths = Math.floor(Math.random() * 50) + 30;
+            animateValue('synthStat', 0, baseSynths, 1500);
+            const baseCredits = (Math.random() * 2 + 1).toFixed(1);
+            document.getElementById('creditStat').innerText = baseCredits + "k";
+        };
+
+        // Chatbot Logic
+        function toggleChat() {
+            const chat = document.getElementById('chatbot');
+            chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Multi-Modal Project Knowledge Base
+        const projectAI = {
+            'features': 'AlterSelf AI features High-Fidelity Synthesis, Neural Chat, and Identity Persistence.',
+            'credits': 'Credits are required for premium Forge operations. You currently have a PRO status.',
+            'synthesis': 'To synthesize, go to the Forge (+) and upload your identity image.',
+            'styles': 'We currently support Anime, Cyber, and Vector archetypes.',
+            'tech': 'I am built on a standalone Zero-Dependency architecture for maximum stability.',
+            'developer': 'Akarsh Jain is the Lead Architect of this Digital Nexus.'
+        };
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if(!text) return;
+
+            const msgs = document.getElementById('chatMsgs');
+            msgs.innerHTML += `<div class="msg msg-user"><div class="msg-bubble">${text}</div></div>`;
+            input.value = '';
+            msgs.scrollTop = msgs.scrollHeight;
+
+            // Bot Thinking
+            setTimeout(() => {
+                let lowerText = text.toLowerCase();
+                let response = "Analyzing your request... How else can I assist with your Neural Identity?";
+                
+                // 1. Knowledge Base Lookup
+                for(let key in projectAI) {
+                    if(lowerText.includes(key)) response = projectAI[key];
+                }
+
+                // 2. Intelligent Suggestions / Commands
+                if(lowerText.includes('anime')) response = "Visual analysis complete. I recommend the 'Cyber-Shonen' model for a high-intensity anime character transformation.";
+                if(lowerText.includes('robot') || lowerText.includes('cyber')) response = "Neural Lock confirmed. If you upload a front-facing photo, I can re-engineer it into a Titan-Class Cyber Robot.";
+                if(lowerText.includes('poster') || lowerText.includes('png')) response = "Formatting Mode: ALPHA. I can generate a transparent 'Poster PNG' variant of your synthesis for professional placement.";
+                if(lowerText.includes('help') || lowerText.includes('what can you do')) response = "I can assist with: \n1. Project Info\n2. Image Recommendations\n3. Style Transformation Logic (Anime, Robot, Poster)";
+
+                msgs.innerHTML += `<div class="msg msg-bot"><div class="msg-bubble">${response}</div></div>`;
+                msgs.scrollTop = msgs.scrollHeight;
+            }, 1000);
+        }
+
+        function handleChatUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                const msgs = document.getElementById('chatMsgs');
+                // Show uploading state
+                msgs.innerHTML += `<div class="msg msg-user"><div class="msg-bubble">📎 Sent Image: ${file.name}</div></div>`;
+                
+                setTimeout(() => {
+                    msgs.innerHTML += `<div class="msg msg-bot"><div class="msg-bubble">👁️ IMAGE DETECTED. Analyzing neural structure... I suggest transforming this into an <b>Anime Character</b> or a <b>Cyber Robot</b>. Which archetype should we use?</div></div>`;
+                    msgs.scrollTop = msgs.scrollHeight;
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -125,8 +125,8 @@
             opacity: 0.2;
         }
 
-        .line { flex: 1; h-px: 1px; background: white; height: 1px; }
-        .text { margin: 0 20px; font-weight: 900; font-size: 10px; letter-spacing: 3px; }
+        .line { flex: 1; background: white; height: 1px; }
+        .divider-text { margin: 0 20px; font-weight: 900; font-size: 10px; letter-spacing: 3px; color: #666; }
 
         .social-row {
             display: flex;
@@ -224,7 +224,7 @@
         </div>
 
         <div class="register-link">
-            New to AlterSelf? <span style="font-weight: 900;">Create Protocol</span>
+            New to AlterSelf? <span style="font-weight: 900; cursor:pointer;" onclick="alert('System: Initializing New Neural Protocol...'); setTimeout(()=>window.location='dashboard.html?user=NewUser', 1500);">Create Protocol</span>
         </div>
     </div>
 </body>
