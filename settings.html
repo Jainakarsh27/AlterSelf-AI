@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlterSelf AI | Neural Configuration</title>
+    <style>
+        :root { --primary: #9333ea; --bg: #0b0118; --card: rgba(255, 255, 255, 0.05); --border: rgba(255, 255, 255, 0.1); }
+        body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; }
+        .gradient-bg { position: fixed; inset: 0; background: radial-gradient(circle at 50% 50%, #1e0b36 0%, #0b0118 100%); z-index: -1; }
+        .container { width: 100%; max-width: 450px; padding: 60px 24px; box-sizing: border-box; }
+        h1 { font-size: 40px; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; letter-spacing: -2px; }
+        .subtitle { color: #666; font-weight: 950; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px; }
+        .setting-group { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 24px; margin-bottom: 20px; }
+        .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border); }
+        .setting-item:last-child { border-bottom: none; }
+        .toggle { width: 44px; height: 24px; background: #333; border-radius: 12px; position: relative; cursor: pointer; }
+        .toggle.active { background: var(--primary); }
+        .toggle::after { content: ''; position: absolute; left: 4px; top: 4px; width: 16px; height: 16px; background: white; border-radius: 50%; transition: 0.2s; }
+        .toggle.active::after { left: 24px; }
+        .bottom-nav { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 280px; height: 60px; background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 30px; display: flex; align-items: center; justify-content: space-around; padding: 0 10px; z-index: 1000; }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg"></div>
+    <div class="container">
+        <h1>Settings</h1>
+        <div class="subtitle">System Configuration</div>
+        <div class="setting-group">
+            <div class="setting-item"><div>High-Fidelity Modes</div><div class="toggle active" onclick="this.classList.toggle('active')"></div></div>
+            <div class="setting-item"><div>Neural Scanning</div><div class="toggle active" onclick="this.classList.toggle('active')"></div></div>
+            <div class="setting-item"><div>Dark Mode Protocol</div><div class="toggle active"></div></div>
+        </div>
+        <div class="setting-group">
+            <div class="setting-item"><div>Privacy Analytics</div><div class="toggle" onclick="this.classList.toggle('active')"></div></div>
+            <div class="setting-item" style="color: #ef4444; font-weight:900;" onclick="alert('System: Neural Reset Initiating...')">Wipe All Protocols</div>
+        </div>
+    </div>
+    <div class="bottom-nav">
+        <div style="opacity: 0.3; cursor:pointer;" onclick="window.location='dashboard.html'">📱</div>
+        <div style="opacity: 0.3; cursor:pointer;" onclick="window.location='history.html'">⏳</div>
+        <div style="width: 40px"></div>
+        <div style="color: var(--primary); cursor:pointer;">⚙️</div>
+        <div style="opacity: 0.3; cursor:pointer;" onclick="window.location='profile.html'">👤</div>
+    </div>
+</body>
+</html>

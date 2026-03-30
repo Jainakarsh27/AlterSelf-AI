@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlterSelf AI | Identity Profile</title>
+    <style>
+        :root { --primary: #9333ea; --bg: #0b0118; --card: rgba(255, 255, 255, 0.05); --border: rgba(255, 255, 255, 0.1); }
+        body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; }
+        .gradient-bg { position: fixed; inset: 0; background: radial-gradient(circle at 100% 0%, #1e0b36 0%, #0b0118 100%); z-index: -1; }
+        .container { width: 100%; max-width: 450px; padding: 60px 24px; box-sizing: border-box; text-align: center; }
+        .profile-pic { width: 120px; height: 120px; border-radius: 60px; border: 2px solid var(--primary); margin: 0 auto 24px; padding: 4px; background: var(--bg); overflow: hidden; }
+        h1 { font-size: 32px; font-weight: 950; text-transform: uppercase; margin-bottom: 4px; letter-spacing: -1px; }
+        .email { color: #888; font-weight: 700; font-size: 14px; margin-bottom: 40px; }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 40px; }
+        .stat-box { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 16px; }
+        .stat-val { font-size: 18px; font-weight: 950; color: var(--primary); }
+        .stat-lab { font-size: 8px; font-weight: 900; text-transform: uppercase; color: #555; letter-spacing: 1px; }
+        .btn-edit { background: white; color: black; border-radius: 20px; padding: 16px 40px; font-weight: 950; cursor: pointer; text-transform: uppercase; border: none; font-size:12px; letter-spacing:1px; }
+        .bottom-nav { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 280px; height: 60px; background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 30px; display: flex; align-items: center; justify-content: space-around; padding: 0 10px; z-index: 1000; }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg"></div>
+    <div class="container">
+        <div class="profile-pic"><img src="https://picsum.photos/id/64/120/120" style="width:100%; height:100%; border-radius:60px; object-fit:cover;"></div>
+        <h1 id="userName">User Identity</h1>
+        <div class="email">neural.id@alterself.ai</div>
+        <div class="stat-grid">
+            <div class="stat-box"><div class="stat-val">76</div><div class="stat-lab">Synths</div></div>
+            <div class="stat-box"><div class="stat-val">3.0k</div><div class="stat-lab">Credits</div></div>
+            <div class="stat-box"><div class="stat-val">PRO</div><div class="stat-lab">Rank</div></div>
+        </div>
+        <button class="btn-edit" onclick="location.href='login.html'">Sign Out Protocol</button>
+    </div>
+    <div class="bottom-nav">
+        <div style="opacity: 0.3; cursor:pointer;" onclick="window.location='dashboard.html'">📱</div>
+        <div style="opacity: 0.3; cursor:pointer;" onclick="window.location='history.html'">⏳</div>
+        <div style="width: 40px"></div>
+        <div style="opacity: 0.3; cursor:pointer;" onclick="window.location='settings.html'">⚙️</div>
+        <div style="color: var(--primary); cursor:pointer;">👤</div>
+    </div>
+    <script>
+        const user = localStorage.getItem('alterself_user') || 'Neural Pilot';
+        document.getElementById('userName').innerText = user;
+    </script>
+</body>
+</html>
